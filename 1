@@ -1,0 +1,92 @@
+// Define an array to store the notes
+let notes = [];
+
+// Define a function to add a new note to the array
+function addNote() {
+  // Get the input values from the user
+  let title = document.getElementById("noteTitle").value;
+  let content = document.getElementById("noteContent").value;
+
+  // Create a new note object
+  let newNote = {
+    title: title,
+    content: content,
+    reminder: null
+  };
+
+  // Add the new note to the array
+  notes.push(newNote);
+
+  // Reset the input fields
+  document.getElementById("noteTitle").value = "";
+  document.getElementById("noteContent").value = "";
+
+  // Call the function to display the notes
+  displayNotes();
+}
+
+// Define a function to display the notes
+function displayNotes() {
+  // Get the element where the notes will be displayed
+  let notesContainer = document.getElementById("notesContainer");
+
+  // Clear the notes container
+  notesContainer.innerHTML = "";
+
+  // Loop through the notes array and create an HTML element for each note
+  for (let i = 0; i < notes.length; i++) {
+    // Create a new div for the note
+    let noteDiv = document.createElement("div");
+    noteDiv.classList.add("note");
+
+    // Create a new h2 for the note title
+    let noteTitle = document.createElement("h2");
+    noteTitle.innerText = notes[i].title;
+    noteDiv.appendChild(noteTitle);
+
+    // Create a new p for the note content
+    let noteContent = document.createElement("p");
+    noteContent.innerText = notes[i].content;
+    noteDiv.appendChild(noteContent);
+
+    // Check if the note has a reminder set
+    if (notes[i].reminder !== null) {
+      // Create a new p for the reminder date
+      let reminderDate = document.createElement("p");
+      reminderDate.innerText = "Reminder: " + notes[i].reminder;
+      noteDiv.appendChild(reminderDate);
+    }
+
+    // Create a new button to delete the note
+    let deleteButton = document.createElement("button");
+    deleteButton.innerText = "Delete";
+    deleteButton.addEventListener("click", function() {
+      deleteNote(i);
+    });
+    noteDiv.appendChild(deleteButton);
+
+    // Add the note div to the notes container
+    notesContainer.appendChild(noteDiv);
+  }
+}
+
+// Define a function to delete a note from the array
+function deleteNote(index) {
+  // Remove the note from the array
+  notes.splice(index, 1);
+
+  // Call the function to display the notes
+  displayNotes();
+}
+
+// Define a function to set a reminder for a note
+function setReminder(index) {
+  // Get the reminder date from the user
+  let reminder = prompt("Enter a reminder date (YYYY-MM-DD)");
+
+  // Update the reminder property of the note object
+  notes[index].reminder = reminder;
+
+  // Call the function to display the notes
+  displayNotes();
+}
